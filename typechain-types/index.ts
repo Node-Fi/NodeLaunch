@@ -12,7 +12,6 @@ export type { ERC165 } from "./ERC165";
 export type { IERC165 } from "./IERC165";
 export type { Greeter } from "./Greeter";
 export type { NodeLaunch } from "./NodeLaunch";
-export type { SmartContract } from "./SmartContract";
 
 export { Ownable__factory } from "./factories/Ownable__factory";
 export { ERC721__factory } from "./factories/ERC721__factory";
@@ -25,4 +24,3 @@ export { ERC165__factory } from "./factories/ERC165__factory";
 export { IERC165__factory } from "./factories/IERC165__factory";
 export { Greeter__factory } from "./factories/Greeter__factory";
 export { NodeLaunch__factory } from "./factories/NodeLaunch__factory";
-export { SmartContract__factory } from "./factories/SmartContract__factory";

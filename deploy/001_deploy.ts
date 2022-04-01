@@ -11,7 +11,11 @@ const deployStorage: DeployFunction = async function ({
   const { deploy } = deployments;
   await deploy("NodeLaunch", {
     from: deployer,
-    args: ["Node Launch Ticket", "NLT"],
+    args: [
+      "Node Launch Ticket",
+      "NLT",
+      "https://raw.githubusercontent.com/Node-Fi/NodeLaunch/main/images/",
+    ],
     log: true,
     // proxy: {
     //   proxyContract: "OptimizedTransparentProxy",

@@ -17,7 +17,6 @@ const accounts: HDAccountsUserConfig = {
   mnemonic:
     process.env.MNEMONIC ||
     "test test test test test test test test test test test junk",
-  path: "m/44'/52752'/0'/0/",
 };
 
 // const accounts = [`0x${process.env.PRIVATE_KEY_DEV}`];

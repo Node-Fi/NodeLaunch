@@ -10,7 +10,9 @@ import "hardhat-abi-exporter";
 import { removeConsoleLog } from "hardhat-preprocessor";
 import { HardhatUserConfig, task } from "hardhat/config";
 import { HDAccountsUserConfig } from "hardhat/types";
+import { NodeLaunch } from "./typechain-types/NodeLaunch";
 import "solidity-coverage";
+import { string } from "hardhat/internal/core/params/argumentTypes";
 
 // task("test", "Test the contracts", async () => {});
 const accounts: HDAccountsUserConfig = {
@@ -18,6 +20,60 @@ const accounts: HDAccountsUserConfig = {
     process.env.MNEMONIC ||
     "test test test test test test test test test test test junk",
 };
+
+task("base", "Sets the base uri", async (args, hre, runSuper) => {
+  const launch = <NodeLaunch>await hre.ethers.getContract("NodeLaunch");
+  await launch.setBaseURI(
+    "https://raw.githubusercontent.com/Node-Fi/NodeLaunch/main/metadata/"
+  );
+});
+
+task("disperse", "Disperses to addresses")
+  .addParam("account", "The account's address")
+  .addParam("ids", "Token ids to distribute, comma separated")
+  .setAction(async (taskArguments, hre) => {
+    const account = await hre.getNamedAccounts();
+    const launch = <NodeLaunch>await hre.ethers.getContract("NodeLaunch");
+    const ids = taskArguments.ids.split(",").map((el: string) => el.trim());
+
+    for (const id in ids) {
+      await launch.transferFrom(
+        account.deployer,
+        taskArguments.account,
+        id.toString()
+      );
+    }
+  });
+
+task("disperse-many", "Disperses to addresses")
+  .addParam("account", "The account's address")
+  .addParam("start", "Token ids to distribute, comma separated")
+  .addParam("amount", "Amount to send")
+  .setAction(async (taskArguments, hre) => {
+    const account = await hre.getNamedAccounts();
+    const launch = <NodeLaunch>await hre.ethers.getContract("NodeLaunch");
+    const start = parseInt(taskArguments.start);
+    const amount = parseInt(taskArguments.amount);
+    for (let id = start; id < start + amount; id++) {
+      await launch.transferFrom(
+        account.deployer,
+        taskArguments.account,
+        id.toString()
+      );
+    }
+  });
+
+task("pause", "Pauses minting").setAction(async (taskArguments, hre) => {
+  const launch = <NodeLaunch>await hre.ethers.getContract("NodeLaunch");
+  await launch.pause(true);
+});
+
+// , async (args, hre, runSuper) => {
+//   const launch = <NodeLaunch>await hre.ethers.getContract("NodeLaunch");
+//   await launch.setBaseURI(
+//     "https://raw.githubusercontent.com/Node-Fi/NodeLaunch/main/metadata/"
+//   );
+// });
 
 // const accounts = [`0x${process.env.PRIVATE_KEY_DEV}`];
 
